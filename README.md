@@ -57,25 +57,19 @@ gateway:
   cors:
     # Methods you want to allow access to
     allowed_methods:
-    - GET
-    - POST
-    - PUT
-    - DELETE
-    - OPTIONS
+    - "GET"
 
      # List of all domains you wish to allow requests from
     allowed_domains:
-    - localhost:1337
+    - "localhost:1337"
 
     # List of headers you wish to allow (case insensitive)
     allowed_headers:
-    - Content-Type
-    - Authorization
-    - x-your-custom-header
+    - "x-your-custom-header"
 
     # List of headers you wish to expose in the response
     exposed_headers:
-    - x-custom-response-header
+    - "x-custom-response-header"
 
   endpoints:
   - name: "Get Orders"
@@ -179,11 +173,11 @@ gateway:
 - If no rate limit is specified at endpoint level, it defaults to the gateway level rate limit which applies on requests across all endpoints combined
 - Hodor uses a sliding window protocol on top of redis to implement rate limiting
 - If number of requests made in a window exceed the limit or if a penalty is levied, the gateway returns ```429 Too many requests``` HTTP status to the client
-- `window` and `penalty` fields accept durations in seconds `1S = 1 second`, minutes `5M = 5 minutes` and hours `0.5H = half an hour` format
+- `window` and `penalty` fields accept durations in seconds `S`, minutes `M` and hours `H` format
 
 ### 5. CORS
 
-- If your API is going to be accessed from web clients, you might need cross origin support
+- If your API is going to be accessed from web clients, you might want to enable cross origin support
 - Similar to rate-limiting, CORS settings can also be enabled on gateway level as well as individual endpoint level
 - Endpoint config takes precedence when both are present
 - Sample CORS config
