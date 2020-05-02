@@ -26,7 +26,7 @@ Think of Hodor's configuration as comprising of two simple levels:
 - Gateway wide configuration
 - List of endpoint integrations where each has its own configuration
 
-```yaml=
+```yaml
 ## YAML Config
 gateway:
   name: "test_gateway"
@@ -108,7 +108,7 @@ gateway:
 
 Transport layer security is supported out of the box. Should you need to protect your API Gateway with TLS certificates, simply set the ```enable_TLS``` flag to ```true``` and provide the paths to your certificate and key files.
 
-```yaml=
+```yaml
 gateway:
   enable_TLS: true
   TLS_cert: "/path/to/samplecertificate.crt"
@@ -125,7 +125,7 @@ You can specify as many API endpoints under an API Gateway as you need and speci
 If you need to proxy requests on different endpoints to different backends, Hodor allows you to do so. You don't need to stick to just one backend for all endpoints.
 Endpoint support dynamic paths with variables in them so that you don't have to give up your clean routes.
 
-```yaml=
+```yaml
 gateway:
   # ...
   endpoints:
@@ -146,7 +146,7 @@ gateway:
 
 API call rate limits can be applied on an overall gateway level (requests across all endpoints combined)
 
-```yaml=
+```yaml
 gateway:
   # ...
   # Allow a maximum of 10 requests in 1 second
@@ -160,7 +160,7 @@ gateway:
 
 as well as on each endpoint individually
 
-```yaml=
+```yaml
 gateway:
   # ...
   endpoints:
@@ -188,7 +188,7 @@ gateway:
 - Endpoint config takes precedence when both are present
 - Sample CORS config
 
-```yaml=
+```yaml
 gateway:
   # ...
   cors:
