@@ -228,7 +228,20 @@ gateway:
 ### 9. High performance
 
 - Golang allows Hodor to support high number of concurrent requests with minimal memory overhead and scales well on multi-core CPUs
-- #TODO: benchmark results
+- Benchmark on Macbook Pro 2015 edition
+
+```shell
+hodor git:(master) $ wrk -t5 -c100 -d10s http://127.0.0.1:3000/api/v1/test
+
+Running 10s test @ http://127.0.0.1:3000/api/v1/test
+  5 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.94ms  307.33us  19.27ms   87.43%
+    Req/Sec    11.17k     2.10k   51.51k    97.61%
+  1057411 requests in 10.10s, 124.04MB read
+Requests/sec: 52699.95
+Transfer/sec:     12.28MB
+```
 
 ### (Upcoming)
 
