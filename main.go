@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/saidmithilesh/hodor/server"
-	"github.com/saidmithilesh/hodor/utils"
+	"github.com/saidmithilesh/hodor/config"
+	"github.com/saidmithilesh/hodor/gateway"
+	"github.com/saidmithilesh/hodor/logging"
 )
 
 func main() {
-	config := utils.LoadConfig()
-	utils.BuildLogger(&config)
-
-	srv := server.HTTPServer{}
-	srv.Build(&config)
-	srv.Start(&config)
+	conf := config.LoadConfig()
+	logging.BuildLogger(&conf)
+	g := &gateway.Gateway{}
+	g = g.Build(&conf)
+	g.Start()
 }
