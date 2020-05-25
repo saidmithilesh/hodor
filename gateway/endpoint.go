@@ -11,6 +11,8 @@ import (
 	"github.com/saidmithilesh/hodor/config"
 	"github.com/saidmithilesh/hodor/logging"
 	"go.uber.org/zap"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // Endpoint data type
@@ -21,6 +23,16 @@ type Endpoint struct {
 }
 
 func (e *Endpoint) proxyFunc(res http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	requestID := uuid.NewV4().String()
+
+	logging.Logger.Info(
+		"New request",
+		zap.Uint("epid", e.Config.ID),
+		zap.String("epname", e.Config.Name),
+		zap.String("epmethod", e.Config.Method),
+		zap.String("reqid", requestID),
+	)
+
 	req.Host = e.Backend.Host
 	req.URL.Host = e.Backend.Host
 	req.URL.Scheme = e.Backend.Scheme
@@ -33,8 +45,9 @@ func (e *Endpoint) proxyFunc(res http.ResponseWriter, req *http.Request, _ httpr
 	if err != nil {
 		logging.Logger.Info(
 			"Request forwarding failed",
-			zap.Uint("endpointId", e.Config.ID),
-			zap.String("endpointName", e.Config.Name),
+			zap.Uint("epid", e.Config.ID),
+			zap.String("epname", e.Config.Name),
+			zap.String("epmethod", e.Config.Method),
 			zap.Error(err),
 		)
 		res.WriteHeader(http.StatusInternalServerError)
@@ -84,11 +97,11 @@ func (e *Endpoint) Build(r *httprouter.Router) *Endpoint {
 		return e
 
 	default:
-		logging.Logger.Error(
+		logging.Logger.Fatal(
 			"Error while configuring proxy function for endpoint",
-			zap.Uint("endpointID", e.Config.ID),
-			zap.String("endpointName", e.Config.Name),
-			zap.String("endpointMethod", e.Config.Method),
+			zap.Uint("epid", e.Config.ID),
+			zap.String("epname", e.Config.Name),
+			zap.String("epmethod", e.Config.Method),
 		)
 		return e
 	}
@@ -103,9 +116,9 @@ func NewEndpoint(conf *config.EndpointConfig) Endpoint {
 	if err != nil {
 		logging.Logger.Fatal(
 			"Error while trying to parse backend url for endpoint",
-			zap.Uint("endpointID", e.Config.ID),
-			zap.String("endpointName", e.Config.Name),
-			zap.String("endpointMethod", e.Config.Method),
+			zap.Uint("epid", e.Config.ID),
+			zap.String("epname", e.Config.Name),
+			zap.String("epmethod", e.Config.Method),
 		)
 	}
 
