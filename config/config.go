@@ -153,8 +153,6 @@ func (conf *Config) validate() {
 		log.Print("\n\n")
 		log.Fatalln("InvalidConfigError :: One or more validation rules failed. Please fix the above errors in the configuration file before continuing.")
 	}
-
-	log.Println("Config successfully validated")
 }
 
 func (gc *GatewayConfig) validate(c *Config) {
@@ -276,7 +274,6 @@ func (e *EndpointConfig) validateBackend(c *Config) {
 // TODO: Update the documentation
 func (conf *Config) optimise() {
 	conf.Gateway.optimise(conf)
-	log.Println("Config successfully optimised")
 }
 
 func (gc *GatewayConfig) optimise(c *Config) {

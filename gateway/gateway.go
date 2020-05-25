@@ -39,7 +39,19 @@ func (g *Gateway) Build(conf *config.Config) *Gateway {
 // Start method starts the http server using the router setup from
 // the Build method.
 func (g *Gateway) Start() {
-	err := http.ListenAndServe(g.Config.Gateway.Port, g.Router)
+	var err error
+
+	server := http.Server{}
+	server.Handler = g.Router
+	server.Addr = g.Config.Gateway.Port
+
+	// If gateway is configured with TLS enabled
+	if g.Config.Gateway.EnableTLS {
+		err = server.ListenAndServeTLS(g.Config.Gateway.TLSCertFilePath, g.Config.Gateway.TLSKeyFilePath)
+	} else {
+		err = server.ListenAndServe()
+	}
+
 	if err != nil {
 		logging.Logger.Fatal(
 			"Error while starting http server",
